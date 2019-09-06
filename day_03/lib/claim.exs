@@ -10,7 +10,7 @@ defmodule Claim do
   end
 
   def plot_claim(claim, fabric) do
-    new_plot = for x <- (claim.x..claim.x + claim.width), y <- (claim.y..claim.y + claim.height), into: %{}, do: {{x,y}, [claim.id]}
+    new_plot = for x <- (claim.x + 1..claim.x + claim.width), y <- (claim.y + 1..claim.y + claim.height), into: %{}, do: {{x,y}, [claim.id]}
     Map.merge(fabric, new_plot, fn (_k, v1, v2) -> v1 ++ v2 end)
   end
 
