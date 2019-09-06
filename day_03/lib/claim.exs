@@ -10,17 +10,8 @@ defmodule Claim do
   end
 
   def plot_claim(claim, fabric) do
-    start_x = claim.x
-    end_x = claim.x + claim.width
-    Enum.each(start_x..end_x, fn (x) ->
-      Enum.each(claim.y..claim.y + claim.height, fn (y) ->
-        key = {x, y}
-        value = Map.get(fabric, key)
-        value = [claim.id | value]
-        Map.put(fabric, key, value)
-      end)
-    end)
-    fabric
+    new_plot = for x <- (claim.x..claim.x + claim.width), y <- (claim.y..claim.y + claim.height), into: %{}, do: {{x,y}, [claim.id]}
+    Map.merge(fabric, new_plot, fn (_k, v1, v2) -> v1 ++ v2 end)
   end
 
   def max_x(claim) do
